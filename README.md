@@ -72,8 +72,8 @@ Client Request
      ▼
 [SecurityFilterChain RBAC]
      ├── GET    /api/users  ──▶ requires ROLE_EMPLOYEE
-     ├── POST   /api/users  ──▶ requires ROLE_MANAGER
-     ├── PUT    /api/users  ──▶ requires ROLE_MANAGER
+     ├── POST   /api/users  ──▶ requires ROLE_MANAGER or ROLE_ADMIN
+     ├── PUT    /api/users  ──▶ requires ROLE_MANAGER or ROLE_ADMIN
      └── DELETE /api/users  ──▶ requires ROLE_ADMIN
 ```
 
@@ -142,8 +142,8 @@ CREATE TABLE user_roles (
 |--------|----------|---------------|-------------|
 | `GET` | `/api/users` | `EMPLOYEE` | List all users |
 | `GET` | `/api/users/{id}` | `EMPLOYEE` | Get user by ID |
-| `POST` | `/api/users` | `MANAGER` | Create a managed user |
-| `PUT` | `/api/users/{id}` | `MANAGER` | Update email, password, or roles |
+| `POST` | `/api/users` | `MANAGER` or `ADMIN` | Create a managed user |
+| `PUT` | `/api/users/{id}` | `MANAGER` or `ADMIN` | Update email, password, or roles |
 | `DELETE` | `/api/users/{id}` | `ADMIN` | Permanently delete a user |
 
 ### Error Responses
@@ -223,7 +223,8 @@ JWT_EXPIRATION_MS=86400000
 vaultify/
 ├── src/main/java/com/vaultify/
 │   ├── config/
-│   │   └── SecurityConfig.java        # OAuth2 Resource Server, RBAC, CORS
+│   │   ├── SecurityConfig.java        # OAuth2 Resource Server, RBAC, CORS
+│   │   └── PasswordConfig.java        # BCryptPasswordEncoder bean (avoids circular deps)
 │   ├── controller/
 │   │   ├── AuthController.java        # /api/auth/register + /api/auth/login
 │   │   └── UserController.java        # /api/users CRUD
