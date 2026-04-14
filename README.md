@@ -5,11 +5,14 @@
 <div align="center">
 
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot_3.4-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+![Java](https://img.shields.io/badge/Java_17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![React](https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL_8-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)
 
 </div>
 
@@ -18,6 +21,20 @@
 ## 📌 Overview
 
 Vaultify is a production-grade identity and access management backend engineered to handle high-throughput API traffic reliably. It combines **stateless JWT/OAuth2 Bearer authentication**, **BCrypt credential encryption**, and **fine-grained RBAC** to secure every endpoint — all managed through a sleek React admin dashboard.
+
+---
+
+## ✨ What Makes This Impressive
+
+| | Detail |
+|---|---|
+| **OAuth2 Resource Server** | Uses Spring Security's `spring-security-oauth2-resource-server` — JWT decoded and validated by the framework, not custom middleware |
+| **Method-level RBAC** | Roles enforced at the HTTP method level in `SecurityFilterChain` — `GET` open to EMPLOYEE, `POST/PUT` require MANAGER+, `DELETE` requires ADMIN only |
+| **BCrypt + stateless** | Passwords hashed with BCrypt before persistence; `SessionCreationPolicy.STATELESS` means zero server-side session overhead |
+| **Circular dep fix** | `PasswordConfig.java` isolates the `BCryptPasswordEncoder` bean to break the Spring circular dependency between `SecurityConfig` and `UserDetailsService` |
+| **RBAC-aware frontend** | React UI conditionally renders Edit/Delete controls based on the authenticated user's role — not just hidden, but never sent to the wrong role |
+| **Multi-stage Docker** | Both frontend (Node → nginx) and backend (Maven → JRE) use multi-stage builds — production images contain no build tools |
+| **One-command deploy** | `docker-compose up --build` spins up MySQL + Spring Boot API + React/nginx — identical local and production environments |
 
 ---
 
